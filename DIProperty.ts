@@ -20,15 +20,15 @@ export class DIProperty {
         return this._container[groupKey];
     }
 
-    public static bind<T>(key: string | Function, factory: () => T, groupKey = 'global'): void {
+    public static bind<T>(key: string | Function | { new(): T }, factory: () => T, groupKey = 'global'): void {
         this.getFactories(groupKey)[this.toInternalKey(key)] = factory;
     }
 
-    public static register<T>(key: string | Function, instance: T, groupKey = 'global'): void {
+    public static register<T>(key: string | Function | { new(): T }, instance: T, groupKey = 'global'): void {
         this.getContainer(groupKey)[this.toInternalKey(key)] = instance;
     }
 
-    private static resolve(key: string | Function, groupKey = 'global'): any {
+    public static resolve<T>(key: string | Function | { new(): T }, groupKey = 'global'): T {
         const internalKey = this.toInternalKey(key);
         const container = this.getContainer(groupKey);
         if (!(internalKey in container)) {
