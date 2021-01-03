@@ -55,7 +55,7 @@ export class DIProperty {
         for (const key of keys) {
             const _key = this.toInternalKey(key);
             if (ret) {
-                ret = ret + _key;
+                ret = ret + '+' + _key;
             }
             else {
                 ret = _key;
