@@ -32,7 +32,7 @@ export class DIProperty {
         const internalKey = this.toInternalKey(key);
         const container = this.getContainer(groupKey);
         if (!(internalKey in container)) {
-            container[internalKey] = this.getFactories(groupKey)[internalKey];
+            container[internalKey] = this.getFactories(groupKey)[internalKey]();
         }
         return container[internalKey];
     }
