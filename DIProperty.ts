@@ -1,19 +1,19 @@
 export class DIProperty {
-    private static readonly _factories: Record<string, Record<string, () => any>> = {};
-    private static readonly _container: Record<string, Record<string, any>> = {};
+    private static readonly _factories: Record<string, Record<string, () => unknown>> = {};
+    private static readonly _container: Record<string, Record<string, unknown>> = {};
 
     private static toInternalKey(key: string | Function): string {
         return key instanceof Function ? key.name : key;
     }
 
-    private static getFactories(groupKey: string): Record<string, () => any> {
+    private static getFactories(groupKey: string): Record<string, () => unknown> {
         if (!(groupKey in this._factories)) {
             this._factories[groupKey] = {};
         }
         return this._factories[groupKey];
     }
 
-    private static getContainer(groupKey: string): Record<string, any> {
+    private static getContainer(groupKey: string): Record<string, unknown> {
         if (!(groupKey in this._container)) {
             this._container[groupKey] = {};
         }
@@ -34,12 +34,15 @@ export class DIProperty {
         if (!(internalKey in container)) {
             container[internalKey] = this.getFactories(groupKey)[internalKey]();
         }
-        return container[internalKey];
+        return container[internalKey] as T;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public static inject(target: string | Function, groupKey = 'global'): any {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const self = this;
-        return function (_target: any, propertyKey: string): PropertyDescriptor {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        return function (_target: unknown, propertyKey: string): PropertyDescriptor {
             return {
                 configurable: false,
                 enumerable: false,
