@@ -1,4 +1,4 @@
-export class DIProperty {
+class DIProperty {
     private static readonly _factories: Record<string, Record<string, () => unknown>> = {};
     private static readonly _container: Record<string, Record<string, unknown>> = {};
 
